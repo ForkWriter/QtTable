@@ -2,8 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-//#include <QShortcut>
 #include <QKeyEvent>
+//#include <QItemSelectionModel>
 #include "mymodel.h"
 #include "imemento.h"
 #include "redactordelegate.h"
@@ -23,6 +23,7 @@ public:
 private:
     Ui::MainWindow *ui;
     MyModel *model;
+    QModelIndexList buffer_model;
 
     class Memento:public IMemento
     {

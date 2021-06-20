@@ -6,7 +6,8 @@ QStack<IMemento*> MementoCollector::m_ahead;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow), model(new MyModel(this))
+    , ui(new Ui::MainWindow)
+    , model(new MyModel(this))
 {
     ui->setupUi(this);
     ui->tableView->setModel(model);
@@ -44,11 +45,26 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_C && event->modifiers() == Qt::ControlModifier)
     {
-
+        buffer_model = ui->tableView->selectionModel()->selection().indexes();
     }
     if (event->key() == Qt::Key_V && event->modifiers() == Qt::ControlModifier)
     {
-
+        if (!buffer_model.isEmpty())
+        {
+            if (!ui->tableView->selectionModel()->selection().indexes().isEmpty())
+            {
+                save_back();
+                QModelIndexList past_model = ui->tableView->selectionModel()->selection().indexes();
+                int j = 0;
+                for (int i=0; i<past_model.size(); i++, j++)
+                {
+                    if (j == buffer_model.size())
+                        j = 0;
+                    model->setData(past_model[i],buffer_model[j].data());
+                }
+                model->dataChanged(past_model.first(), past_model.last());
+            }
+        }
     }
     if (event->key() == Qt::Key_Z && event->modifiers() == Qt::ControlModifier)
     {

@@ -18,9 +18,9 @@ bool MyModel::insertRows(int row, int count, const QModelIndex &parent)
     for (int pos=0; pos<count; ++pos)
     {
         QVector<QString> vect;
-        for (int i=0; i<headers.count(); i++)
+        for (int i=0; i<columnCount(QModelIndex()); i++)
             vect.push_back("");
-        if (row < content.count())
+        if (row < rowCount(QModelIndex()))
             content.insert(row, vect);
         else
             content.append(vect);
@@ -35,7 +35,7 @@ bool MyModel::removeRows(int row, int count, const QModelIndex &parent)
 {
     beginRemoveRows(QModelIndex(), row, row + count - 1);
 
-    if (row + count <= content.count())
+    if (row + count <= rowCount(QModelIndex()))
         content.erase(content.begin()+row, content.begin()+row+count);
     else
     {
@@ -64,18 +64,18 @@ bool MyModel::insertColumns(int column, int count, const QModelIndex &parent)
     for (int pos=0; pos<count; ++pos)
     {
         QVariant val;
-        if (column < headers.count())
+        if (column < columnCount(QModelIndex()))
         {
             val = column + pos;
             headers.insert(headers.begin()+val.toInt(), val.toString());
         }
         else
         {
-            val = headers.count();
+            val = columnCount(QModelIndex());
             headers.append(val.toString());
         }
-        for (int i=0; i<content.count(); i++)
-            if (column < content[i].size())
+        for (int i=0; i<rowCount(QModelIndex()); i++)
+            if (column < columnCount(QModelIndex()))
                 content[i].insert(content[i].begin()+column,"");
             else
                 content[i].push_back("");
@@ -90,10 +90,10 @@ bool MyModel::removeColumns(int column, int count, const QModelIndex &parent)
 {
     beginRemoveColumns(QModelIndex(), column, column + count - 1);
 
-    if (column + count <= headers.size())
+    if (column + count <= columnCount(QModelIndex()))
     {
         headers.erase(headers.begin()+column, headers.begin()+column+count);
-        for (int i=0; i<content.count(); i++)
+        for (int i=0; i<rowCount(QModelIndex()); i++)
             content[i].erase(content[i].begin()+column, content[i].begin()+column+count);
     }
     else
@@ -158,20 +158,20 @@ void MyModel::modelReset()
 {
     beginResetModel();
 
-    removeRows(0, content.count());
-    removeColumns(0, headers.count());
+    removeRows(0, rowCount(QModelIndex()));
+    removeColumns(0, columnCount(QModelIndex()));
 
     endResetModel();
 }
 
 void MyModel::modelCopy(MyModel *copy)
 {
-    insertRows(0, copy->content.count());
-    insertColumns(0, copy->headers.count());
-    for (int i=0; i<copy->headers.count(); i++)
+    insertRows(0, copy->rowCount(QModelIndex()));
+    insertColumns(0, copy->columnCount(QModelIndex()));
+    for (int i=0; i<copy->columnCount(QModelIndex()); i++)
         setHeaderData(i, Qt::Horizontal, copy->headerData(i, Qt::Horizontal));
-    for (int i=0; i<copy->content.count(); i++)
-        for (int j=0; j<copy->headers.count(); j++)
+    for (int i=0; i<copy->rowCount(QModelIndex()); i++)
+        for (int j=0; j<copy->columnCount(QModelIndex()); j++)
             setData(index(i,j), copy->data(index(i,j),Qt::DisplayRole));
 }
 
