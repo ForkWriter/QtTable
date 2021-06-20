@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>470</width>
-    <height>316</height>
+    <width>372</width>
+    <height>381</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_2">
         <property name="text">
-         <string>Delete rows</string>
+         <string>Remove rows</string>
         </property>
        </widget>
       </item>
@@ -41,7 +41,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_4">
         <property name="text">
-         <string>Delete columns</string>
+         <string>Remove columns</string>
         </property>
        </widget>
       </item>
@@ -90,6 +90,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="pushButton_6">
+        <property name="text">
+         <string>Rest table</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -118,7 +125,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>470</width>
+     <width>372</width>
      <height>21</height>
     </rect>
    </property>

@@ -37,6 +37,14 @@ bool MyModel::removeRows(int row, int count, const QModelIndex &parent)
 
     if (row + count <= content.count())
         content.erase(content.begin()+row, content.begin()+row+count);
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Error!");
+        msgBox.setText("Some of the specified rows cannot be removed.");
+        msgBox.exec();
+    }
 
     endRemoveRows();
     return true;
@@ -88,6 +96,14 @@ bool MyModel::removeColumns(int column, int count, const QModelIndex &parent)
         for (int i=0; i<content.count(); i++)
             content[i].erase(content[i].begin()+column, content[i].begin()+column+count);
     }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Error!");
+        msgBox.setText("Some of the specified columns cannot be removed.");
+        msgBox.exec();
+    }
 
     endRemoveColumns();
     return true;
@@ -136,6 +152,27 @@ bool MyModel::setData(const QModelIndex &index, const QVariant &value, int role)
     if (role == Qt::EditRole)
         content[index.row()][index.column()] = value.toString();
     return true;
+}
+
+void MyModel::modelReset()
+{
+    beginResetModel();
+
+    removeRows(0, content.count());
+    removeColumns(0, headers.count());
+
+    endResetModel();
+}
+
+void MyModel::modelCopy(MyModel *copy)
+{
+    insertRows(0, copy->content.count());
+    insertColumns(0, copy->headers.count());
+    for (int i=0; i<copy->headers.count(); i++)
+        setHeaderData(i, Qt::Horizontal, copy->headerData(i, Qt::Horizontal));
+    for (int i=0; i<copy->content.count(); i++)
+        for (int j=0; j<copy->headers.count(); j++)
+            setData(index(i,j), copy->data(index(i,j),Qt::DisplayRole));
 }
 
 Qt::ItemFlags MyModel::flags(const QModelIndex &index) const

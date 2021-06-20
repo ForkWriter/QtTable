@@ -11,11 +11,14 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    mymodel.cpp
+    mymodel.cpp \
+    redactordelegate.cpp
 
 HEADERS += \
+    imemento.h \
     mainwindow.h \
-    mymodel.h
+    mymodel.h \
+    redactordelegate.h
 
 FORMS += \
     mainwindow.ui
