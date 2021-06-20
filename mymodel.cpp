@@ -2,8 +2,7 @@
 
 MyModel::MyModel(QObject *parent) : QAbstractTableModel(parent)
 {
-    headers.append("qwerty");
-    headers.append("ytrewq");
+
 }
 
 int MyModel::rowCount(const QModelIndex &parent) const
@@ -56,7 +55,17 @@ bool MyModel::insertColumns(int column, int count, const QModelIndex &parent)
 
     for (int pos=0; pos<count; ++pos)
     {
-        headers.insert(headers.begin()+column, "");
+        QVariant val;
+        if (column < headers.count())
+        {
+            val = column + pos;
+            headers.insert(headers.begin()+val.toInt(), val.toString());
+        }
+        else
+        {
+            val = headers.count();
+            headers.append(val.toString());
+        }
         for (int i=0; i<content.count(); i++)
             if (column < content[i].size())
                 content[i].insert(content[i].begin()+column,"");
@@ -93,12 +102,11 @@ QVariant MyModel::data(const QModelIndex &index, int role) const
     switch (role)
     {
         case Qt::DisplayRole:
-        //case Qt::EditRole:
           return content[index.row()][index.column()];
         case Qt::TextAlignmentRole:
           return Qt::AlignCenter;
         case Qt::SizeHintRole:
-          return QSize(0,40);
+          return QSize(0,30);
         case Qt::FontRole:
           return QFont("Times New Roman", 14);
         default:
@@ -113,6 +121,14 @@ QVariant MyModel::headerData(int section, Qt::Orientation orientation, int role)
     else if (role == Qt::DisplayRole)
         return section;
     return QVariant();
+}
+
+bool MyModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role)
+{
+    if (orientation == Qt::Horizontal && role == Qt::EditRole)
+        headers[section] = value.toString();
+    emit headerDataChanged(Qt::Horizontal,section,section);
+    return true;
 }
 
 bool MyModel::setData(const QModelIndex &index, const QVariant &value, int role)
