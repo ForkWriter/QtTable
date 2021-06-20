@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>372</width>
-    <height>381</height>
+    <width>427</width>
+    <height>416</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,35 +20,35 @@
       <item>
        <widget class="QPushButton" name="pushButton">
         <property name="text">
-         <string>Add rows</string>
+         <string>Добавить строку</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_2">
         <property name="text">
-         <string>Remove rows</string>
+         <string>Удалить строку</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_3">
         <property name="text">
-         <string>Add columns</string>
+         <string>Добавить столбец</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_4">
         <property name="text">
-         <string>Remove columns</string>
+         <string>Удалить столбец</string>
         </property>
        </widget>
       </item>
       <item>
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>Row/column index</string>
+         <string>Индекс строки/стобца</string>
         </property>
        </widget>
       </item>
@@ -58,7 +58,7 @@
       <item>
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>Row/column count</string>
+         <string>Количество столбцов/строк</string>
         </property>
        </widget>
       </item>
@@ -68,7 +68,7 @@
       <item>
        <widget class="QLabel" name="label_3">
         <property name="text">
-         <string>New header name</string>
+         <string>Новое имя заголовка</string>
         </property>
        </widget>
       </item>
@@ -85,7 +85,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_5">
         <property name="text">
-         <string>Change header</string>
+         <string>Изменить заголовок</string>
         </property>
        </widget>
       </item>
@@ -108,7 +108,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_6">
         <property name="text">
-         <string>Reset table</string>
+         <string>Сбросить таблицу</string>
         </property>
        </widget>
       </item>
@@ -141,12 +141,24 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>372</width>
+     <width>427</width>
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Справка</string>
+    </property>
+    <addaction name="action"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="action">
+   <property name="text">
+    <string>Инструкция</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

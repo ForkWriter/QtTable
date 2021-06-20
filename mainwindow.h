@@ -46,5 +46,6 @@ private:
 
 private slots:
     void save_editor();
+    void on_action_triggered();
 };
 #endif // MAINWINDOW_H

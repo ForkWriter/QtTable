@@ -41,8 +41,8 @@ bool MyModel::removeRows(int row, int count, const QModelIndex &parent)
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Error!");
-        msgBox.setText("Some of the specified rows cannot be removed.");
+        msgBox.setWindowTitle("Ошибка!");
+        msgBox.setText("Невозможно удалить некоторые из указанных строк!");
         msgBox.exec();
     }
 
@@ -100,8 +100,8 @@ bool MyModel::removeColumns(int column, int count, const QModelIndex &parent)
     {
         QMessageBox msgBox;
         msgBox.setIcon(QMessageBox::Critical);
-        msgBox.setWindowTitle("Error!");
-        msgBox.setText("Some of the specified columns cannot be removed.");
+        msgBox.setWindowTitle("Ошибка!");
+        msgBox.setText("Невозможно удалить некоторые из указанных столбцов!");
         msgBox.exec();
     }
 
@@ -141,6 +141,15 @@ QVariant MyModel::headerData(int section, Qt::Orientation orientation, int role)
 
 bool MyModel::setHeaderData(int section, Qt::Orientation orientation, const QVariant &value, int role)
 {
+    if (section >= columnCount(QModelIndex()) || headers.isEmpty())
+    {
+        QMessageBox msgBox;
+        msgBox.setIcon(QMessageBox::Critical);
+        msgBox.setWindowTitle("Ошибка!");
+        msgBox.setText("Столбец с таким индексом не существует!");
+        msgBox.exec();
+        return false;
+    }
     if (orientation == Qt::Horizontal && role == Qt::EditRole)
         headers[section] = value.toString();
     emit headerDataChanged(Qt::Horizontal,section,section);

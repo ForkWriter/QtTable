@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
     , model(new MyModel(this))
 {
     ui->setupUi(this);
+    setWindowTitle("Таблица");
     ui->tableView->setModel(model);
     RedactorDelegate *cell_editor = new RedactorDelegate(this);
     ui->tableView->setItemDelegate(cell_editor);;
@@ -94,4 +95,25 @@ void MainWindow::Memento::restoreData()
     window->model->modelReset();
     window->model->modelCopy(model);
     window->ui->tableView->setModel(window->model);
+}
+
+void MainWindow::on_action_triggered()
+{
+    QMessageBox msgBox;
+    msgBox.setIcon(QMessageBox::Information);
+    msgBox.setWindowTitle("Инструкция");
+    msgBox.setText("Для редактирования размеров таблицы необходимо использовать кнопки, "
+                   "расположенные в правой части окна. \nТам находятся кнопки для вставки/удаления "
+                   "строк и столбцов таблицы, а также поля для ввода индекса строки/столбца для вставки"
+                   "и количества строк/столбцов, которые будут вставлены. \nПри указании индекса, который "
+                   "не существует в таблицу вставка будет произведена в конец таблицы. При попытке удаления "
+                   "не сушествующих столбцов появится сообщение об ошибке, а операция не будет произведена. "
+                   "\nВ той же части находятся кнопка для смены имени заголовка и поле для ввода нового имени. "
+                   "Также там находится кнопка для сброса таблицы."
+                   "\nТаблица поддерживает несколько горячих клавиш:"
+                   "\n- Ctrl+C - копирование выделенных элементов"
+                   "\n- Ctrl+V - вставка скопированных элементов"
+                   "\n- Ctrl+Z - откат действия (стек действий не ограничен)"
+                   "\n- Ctrl+Y - восстановление отмененного действия (стек также не ограничен)");
+    msgBox.exec();
 }
