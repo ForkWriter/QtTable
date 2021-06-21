@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     RedactorDelegate *cell_editor = new RedactorDelegate(this);
     ui->tableView->setItemDelegate(cell_editor);;
     connect(cell_editor, SIGNAL(commit_data(QWidget*)), this, SLOT(save_editor()));
+    ui->spinBox_2->setMinimum(1);
     connect(ui->pushButton, &QPushButton::clicked, [=](){save_back();model->insertRows(ui->spinBox->value(),ui->spinBox_2->value());});
     connect(ui->pushButton_2, &QPushButton::clicked, [=](){save_back();model->removeRows(ui->spinBox->value(),ui->spinBox_2->value());});
     connect(ui->pushButton_3, &QPushButton::clicked, [=](){save_back();model->insertColumns(ui->spinBox->value(),ui->spinBox_2->value());});

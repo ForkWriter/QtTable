@@ -2,7 +2,7 @@
 
 MyModel::MyModel(QObject *parent) : QAbstractTableModel(parent)
 {
-
+    
 }
 
 int MyModel::rowCount(const QModelIndex &parent) const
@@ -33,6 +33,8 @@ bool MyModel::insertRows(int row, int count, const QModelIndex &parent)
 
 bool MyModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+    if (!rowCount(QModelIndex()))
+        return false;
     beginRemoveRows(QModelIndex(), row, row + count - 1);
 
     if (row + count <= rowCount(QModelIndex()))
@@ -88,6 +90,8 @@ bool MyModel::insertColumns(int column, int count, const QModelIndex &parent)
 
 bool MyModel::removeColumns(int column, int count, const QModelIndex &parent)
 {
+    if (!columnCount(QModelIndex()))
+        return false;
     beginRemoveColumns(QModelIndex(), column, column + count - 1);
 
     if (column + count <= columnCount(QModelIndex()))
@@ -167,21 +171,29 @@ void MyModel::modelReset()
 {
     beginResetModel();
 
-    removeRows(0, rowCount(QModelIndex()));
-    removeColumns(0, columnCount(QModelIndex()));
+    if (rowCount(QModelIndex()))
+        removeRows(0, rowCount(QModelIndex()));
+    if (columnCount(QModelIndex()))
+        removeColumns(0, columnCount(QModelIndex()));
 
     endResetModel();
 }
 
 void MyModel::modelCopy(MyModel *copy)
 {
-    insertRows(0, copy->rowCount(QModelIndex()));
-    insertColumns(0, copy->columnCount(QModelIndex()));
-    for (int i=0; i<copy->columnCount(QModelIndex()); i++)
-        setHeaderData(i, Qt::Horizontal, copy->headerData(i, Qt::Horizontal));
-    for (int i=0; i<copy->rowCount(QModelIndex()); i++)
-        for (int j=0; j<copy->columnCount(QModelIndex()); j++)
-            setData(index(i,j), copy->data(index(i,j),Qt::DisplayRole));
+    if (copy->columnCount(QModelIndex()))
+    {
+        insertColumns(0, copy->columnCount(QModelIndex()));
+        for (int i=0; i<copy->columnCount(QModelIndex()); i++)
+            setHeaderData(i, Qt::Horizontal, copy->headerData(i, Qt::Horizontal));
+    }
+    if (copy->rowCount(QModelIndex()))
+    {
+        insertRows(0, copy->rowCount(QModelIndex()));
+        for (int i=0; i<copy->rowCount(QModelIndex()); i++)
+            for (int j=0; j<copy->columnCount(QModelIndex()); j++)
+                setData(index(i,j), copy->data(index(i,j),Qt::DisplayRole));
+    }
 }
 
 Qt::ItemFlags MyModel::flags(const QModelIndex &index) const
